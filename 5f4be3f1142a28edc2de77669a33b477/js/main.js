@@ -55,10 +55,10 @@ const more = document.querySelector('.more');
 const navigationLink = document.querySelectorAll('.navigation-link');
 const longGoodsList = document.querySelector('.long-goods-list');
 
-const getGoods = async function () {
+const getGoods = async function() {
 	const result = await fetch('db/db.json');
 	if (!result.ok) {
-		throw 'Ошибка:' + result.status
+		throw 'Ошибка: ' + result.status
 	}
 	return await result.json();
 };
@@ -88,7 +88,7 @@ const renderCards = function(data) {
 	longGoodsList.textContent = '';
 	const cards = data.map(createCard);
 	longGoodsList.append(...cards);
-	document.body.classList.add('show-goods');
+	document.body.classList.add('show-goods')
 };
 
 more.addEventListener('click', function(event) {
@@ -112,6 +112,6 @@ navigationLink.forEach(function (link) {
 		event.preventDefault();
 		const field = link.dataset.field;
 		const value = link.textContent;
-		filterCards(field, value)
+		filterCards(field, value);
 	})
 });
