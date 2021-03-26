@@ -12,7 +12,7 @@ const mySwiper = new Swiper('.swiper-container', {
 
 const buttonCart = document.querySelector('.button-cart');
 const modalCart = document.querySelector('#modal-cart');
-// const modalClose = document.querySelector('.modal-close');
+
 const openModal = function () {
 	modalCart.classList.add('show')
 }
@@ -22,7 +22,7 @@ const closeModal = function () {
 }
 
 buttonCart.addEventListener('click', openModal);
-// modalClose.addEventListener('click', closeModal);
+
 
 modalCart.addEventListener('click', function (event) {
 	const target = event.target;
@@ -51,14 +51,16 @@ modalCart.addEventListener('click', function (event) {
 
 // goods
 
-const more = document.querySelector('.more');
-const navigationLink = document.querySelectorAll('.navigation-link');
 const longGoodsList = document.querySelector('.long-goods-list');
+const viewAll = document.querySelectorAll('.view-all');
+const navigationLink = document.querySelectorAll('.navigation-link:not(.view-all)');
+const showAcsessories = document.querySelectorAll('.show-acsessories');
+const showClothing = document.querySelectorAll('.show-clothing');
 
 const getGoods = async function() {
 	const result = await fetch('db/db.json');
 	if (!result.ok) {
-		throw 'Ошибка: ' + result.status
+		throw 'Ошибочка вышла: ' + result.status
 	}
 	return await result.json();
 };
@@ -88,12 +90,16 @@ const renderCards = function(data) {
 	longGoodsList.textContent = '';
 	const cards = data.map(createCard);
 	longGoodsList.append(...cards);
-	document.body.classList.add('show-goods')
+	document.body.classList.add('show-goods');
 };
 
-more.addEventListener('click', function(event) {
+const showAll = function(event) {
 	event.preventDefault();
 	getGoods().then(renderCards);
+}
+
+viewAll.forEach(function (elem) {
+	elem.addEventListener('click', showAll);
 });
 
 const filterCards = function (field, value) {
@@ -114,4 +120,17 @@ navigationLink.forEach(function (link) {
 		const value = link.textContent;
 		filterCards(field, value);
 	})
+});
+
+showAcsessories.forEach(item => {
+	item.addEventListener('click', event => {
+		event.preventDefault();
+		filterCards('category', 'Accessories');
+	});
+});
+showClothing.forEach(item => {
+	item.addEventListener('click', event => {
+		event.preventDefault();
+		filterCards('category', 'Clothing');
+	});
 });
